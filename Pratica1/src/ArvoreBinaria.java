@@ -1,5 +1,5 @@
 public class ArvoreBinaria {
-    public static double nComparacoes = 0;
+    private int nComparacoes = 0;
     private No raiz;
 
     /**
@@ -9,17 +9,16 @@ public class ArvoreBinaria {
         this.raiz = null;
     }
 
-    public static void main(String[] args) {
-        // gerar árvores a partir de n elementos ORDENADOS, com n variando de 1.000 até 9.000, com intervalo de 1.000.
-        ArvoreBinaria arvore1000 = new ArvoreBinaria();
+    public int getnComparacoes() {
+        return nComparacoes - 1;
+    }
 
-        System.out.println("Arvore de 1000 elementos:");
-        for (int i = 0; i < 1000; i++) {
-            arvore1000.raiz = arvore1000.insere(new Item(i), arvore1000.raiz);
-        }
-        System.out.println("Pesquisando o elemento 1000");
-        arvore1000.pesquisa(new Item(1000), arvore1000.raiz);
-        System.out.println("Foram realizadas " + nComparacoes + " comparacoes");
+    public Item pesquisa(Item reg) {
+        return this.pesquisa(reg, this.raiz);
+    }
+
+    public void insere(Item reg) {
+        this.raiz = this.insere(reg, this.raiz);
     }
 
     /**
@@ -39,7 +38,7 @@ public class ArvoreBinaria {
         } else if (reg.compara(p.reg) > 0) { // se o registro for maior que o nó, o registro é inserido na subárvore direita
             p.dir = insere(reg, p.dir);
         } else { // se o registro já existe, então nada é feito
-            System.out.println("Erro: registro já existente");
+            return p;
         }
         return p;
     }
