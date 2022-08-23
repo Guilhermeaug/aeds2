@@ -16,16 +16,16 @@ public class Principal {
         List<Integer> numeroComparacoes = new ArrayList<>();
         List<Long> tempoGasto = new ArrayList<>();
 
-        int numeroElementos = 1000;
-        for (int i = 0; i < 9; i++) {
+        int numeroElementos = 10000;
+        for (int i = 0; i < 10; i++) {
             Random random = new Random();
 
-            ArvoreBinaria arvoreBinariaOrdenada = new ArvoreBinaria();
+            ArvoreSBB arvoreBinariaOrdenada = new ArvoreSBB();
             for (int j = 0; j < numeroElementos; j++) {
                 arvoreBinariaOrdenada.insere(new Item(j));
             }
 
-            ArvoreBinaria arvoreBinariaAleatoria = new ArvoreBinaria();
+            ArvoreSBB arvoreBinariaAleatoria = new ArvoreSBB();
             for (int j = 0; j < numeroElementos; j++) {
                 // Gerando números aleatórios entre 0 e numeroElementos - 1
                 int numeroAleatorio = random.nextInt(numeroElementos - 1);
@@ -57,7 +57,7 @@ public class Principal {
             tempoGasto.add(Duration.between(starts1, ends1).toMillis());
             tempoGasto.add(Duration.between(starts2, ends2).toMillis());
 
-            numeroElementos += 1000;
+            numeroElementos += 10000;
         }
 
         gravarArq.printf("Numero de comparacoes\n");
