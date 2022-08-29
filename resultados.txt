@@ -1,5 +1,11 @@
-Numero de comparacoes
-19 15 20 14 22 16 21 14 22 14 23 16 23 15 22 18 26 16 23 22 
+Número de comparações da árvore ordenada:
+1000 2000 3000 4000 5000 6000 7000 8000 9000 
 
-Tempo gasto
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+Número de comparações da árvore aleatória:
+9 10 6 9 6 17 9 7 10 
+
+Tempo gasto da árvore ordenada:
+448900 159800 139700 225500 81100 75700 84900 98000 114100 
+
+Tempo gasto da árvore aleatória:
+20300 19900 16500 16500 16000 19200 16500 26300 16400 

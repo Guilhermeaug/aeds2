@@ -1,8 +1,6 @@
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,63 +11,70 @@ public class Principal {
         FileWriter arq = new FileWriter("resultados.txt");
         PrintWriter gravarArq = new PrintWriter(arq);
 
-        List<Integer> numeroComparacoes = new ArrayList<>();
-        List<Long> tempoGasto = new ArrayList<>();
+        List<Integer> numeroComparacoesOrdenada = new ArrayList<>(10);
+        List<Long> tempoGastoOrdenada = new ArrayList<>(10);
 
-        int numeroElementos = 1000;
-        for (int i = 0; i < 9; i++) {
+        List<Integer> numeroComparacoesAleatoria = new ArrayList<>(10);
+        List<Long> tempoGastoAleatoria = new ArrayList<>(10);
+
+        int LIMITE_GERADOR = 1000000;
+        for (int i = 1000; i <= 9000; i += 1000) {
             Random random = new Random();
 
             ArvoreBinaria arvoreBinariaOrdenada = new ArvoreBinaria();
-            for (int j = 0; j < numeroElementos; j++) {
+            for (int j = 0; j < i; j++) {
                 arvoreBinariaOrdenada.insere(new Item(j));
             }
 
             ArvoreBinaria arvoreBinariaAleatoria = new ArvoreBinaria();
-            for (int j = 0; j < numeroElementos; j++) {
+            for (int j = 0; j < i; j++) {
                 // Gerando números aleatórios entre 0 e numeroElementos - 1
-                int numeroAleatorio = random.nextInt(numeroElementos - 1);
+                int numeroAleatorio = random.nextInt(LIMITE_GERADOR - 1);
                 arvoreBinariaAleatoria.insere(new Item(numeroAleatorio));
             }
 
             // Tempo de pesquisa da árvore ordenada
-            Instant starts1 = Instant.now();
-            arvoreBinariaOrdenada.pesquisa(new Item(numeroElementos + 50));
-            Instant ends1 = Instant.now();
+            long starts1 = System.nanoTime();
+            Item item1 = arvoreBinariaOrdenada.pesquisa(new Item(LIMITE_GERADOR + 50));
+            if (item1 == null) {
+                System.out.println("Item não encontrado");
+            }
+            long ends1 = System.nanoTime();
 
             // Tempo de pesquisa da árvore aleatória
-            Instant starts2 = Instant.now();
-            arvoreBinariaAleatoria.pesquisa(new Item(numeroElementos + 50));
-            Instant ends2 = Instant.now();
+            long starts2 = System.nanoTime();
+            Item item2 = arvoreBinariaAleatoria.pesquisa(new Item(LIMITE_GERADOR + 50));
+            if (item2 == null) {
+                System.out.println("Item não encontrado");
+            }
+            long ends2 = System.nanoTime();
 
-            System.out.println("Arvore ordenada");
-            System.out.printf("Comparacoes: %d\tTempo Gasto: %d\n", arvoreBinariaOrdenada.getnComparacoes(),
-                    Duration.between(starts1, ends1).toNanos());
+            numeroComparacoesOrdenada.add(arvoreBinariaOrdenada.getnComparacoes());
+            numeroComparacoesAleatoria.add(arvoreBinariaAleatoria.getnComparacoes());
 
-            System.out.println("Arvore aleatoria");
-            System.out.printf("Comparacoes: %d\tTempo Gasto: %d\n", arvoreBinariaAleatoria.getnComparacoes(),
-                    Duration.between(starts2, ends2).toNanos());
-            System.out.println("\n");
-
-            numeroComparacoes.add(arvoreBinariaOrdenada.getnComparacoes());
-            numeroComparacoes.add(arvoreBinariaAleatoria.getnComparacoes());
-
-            tempoGasto.add(Duration.between(starts1, ends1).toMillis());
-            tempoGasto.add(Duration.between(starts2, ends2).toMillis());
-
-            numeroElementos += 1000;
+            tempoGastoOrdenada.add(ends1 - starts1);
+            tempoGastoAleatoria.add(ends2 - starts2);
         }
 
-        gravarArq.printf("Numero de comparacoes\n");
-        for (Integer numeroComparacoe : numeroComparacoes) {
-            gravarArq.printf("%d ", numeroComparacoe);
-        }
-        gravarArq.printf("\n");
+        gravarArq.printf("Número de comparações da árvore ordenada:\n");
+        numeroComparacoesOrdenada.forEach((n) -> {
+            gravarArq.printf("%d ", n);
+        });
 
-        gravarArq.printf("\nTempo gasto\n");
-        for (Long aLong : tempoGasto) {
-            gravarArq.printf("%d ", aLong);
-        }
+        gravarArq.printf("\n\nNúmero de comparações da árvore aleatória:\n");
+        numeroComparacoesAleatoria.forEach((n) -> {
+            gravarArq.printf("%d ", n);
+        });
+
+        gravarArq.printf("\n\nTempo gasto da árvore ordenada:\n");
+        tempoGastoOrdenada.forEach((n) -> {
+            gravarArq.printf("%d ", n);
+        });
+
+        gravarArq.printf("\n\nTempo gasto da árvore aleatória:\n");
+        tempoGastoAleatoria.forEach((n) -> {
+            gravarArq.printf("%d ", n);
+        });
 
         arq.close();
     }
